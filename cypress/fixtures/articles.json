@@ -15,7 +15,7 @@
                 "following": false
             },
             "favorited": false,
-            "favoritesCount": 0
+            "favoritesCount": 5
         },
         {
             "title": "test article",
@@ -32,7 +32,7 @@
                 "following": false
             },
             "favorited": false,
-            "favoritesCount": 1
+            "favoritesCount": 3
         }
        
     ],
