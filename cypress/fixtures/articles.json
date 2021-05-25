@@ -1,0 +1,40 @@
+{
+    "articles": [
+        {
+            "title": "Carol",
+            "slug": "carol-oua4h0",
+            "body": "This is a body of the Article",
+            "createdAt": "2021-05-25T07:54:09.790Z",
+            "updatedAt": "2021-05-25T07:54:09.790Z",
+            "tagList": [],
+            "description": "This is a description",
+            "author": {
+                "username": "Ana Santos",
+                "bio": null,
+                "image": "https://static.productionready.io/images/smiley-cyrus.jpg",
+                "following": false
+            },
+            "favorited": false,
+            "favoritesCount": 0
+        },
+        {
+            "title": "test article",
+            "slug": "test-article-wj5pec",
+            "body": "he there test article",
+            "createdAt": "2021-05-25T07:04:33.080Z",
+            "updatedAt": "2021-05-25T07:04:33.080Z",
+            "tagList": [],
+            "description": "this is test article",
+            "author": {
+                "username": "ravigajul",
+                "bio": null,
+                "image": "https://static.productionready.io/images/smiley-cyrus.jpg",
+                "following": false
+            },
+            "favorited": false,
+            "favoritesCount": 1
+        }
+       
+    ],
+    "articlesCount": 500
+}
