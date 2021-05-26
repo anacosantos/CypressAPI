@@ -5,18 +5,21 @@ describe('Test with backend', () => {
 
     beforeEach('Login to the app', () => {
         //create server, because wanna override the route  
-        cy.server()
-        //intercept the original route and override the return value by my tags.json
-        cy.route('GET', '**/tags', 'fixture:tags.json')
+        //delete serve because intercept dont need anymore
+        //cy.server()
+        //cy.route('GET', '**/tags', 'fixture:tags.json')
+
+        //replace route to intercept method and override the return value by my tags.json
+        cy.intercept('GET', '**/tags', {fixture:tags.json})
         cy.loginToApplication()
     })
 
     it('verify correct request and response', () => {
         
         //create cypress server
-        cy.server()
+        // cy.server() delete because of intercept
         //intercept the original route 
-        cy.route('POST', '**/articles').as('postArticles')
+        cy.intercept('POST', '**/articles').as('postArticles')
 
         cy.contains('New Article').click()
         cy.get('[formcontrolname="title"]').type('Carol')
@@ -45,9 +48,9 @@ describe('Test with backend', () => {
         //create route for our articles laced
         //get response information from feed(xhr)
         //cy.screenshot('before-fill-in-article')
-        cy.route('GET', '**/articles/feed*', '{"articles":[],"articlesCount":0}')
+        cy.intercept('GET', '**/articles/feed*', {"articles":[],"articlesCount":0})
         //get article.json from global feed response(xhr)
-        cy.route('GET', '**/articles*', 'fixture:articles.json')
+        cy.intercept('GET', '**/articles*', {fixture:articles.json})
 
         cy.contains('Global Feed').click()
         //cy.screenshot('after-fill-in-article')
@@ -61,7 +64,7 @@ describe('Test with backend', () => {
         //article.json we modify slug string from de second article 
         cy.fixture('articles').then(file => {
             const articleLink = file.articles[1].slug 
-            cy.route('POST', '**articles/'+articleLink+'/favorite', file)
+            cy.intercept('POST', '**articles/'+articleLink+'/favorite', file)
         })
 
         cy.get('app-article-list button')
