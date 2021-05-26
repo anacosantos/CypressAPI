@@ -10,7 +10,7 @@ describe('Test with backend', () => {
         //cy.route('GET', '**/tags', 'fixture:tags.json')
 
         //replace route to intercept method and override the return value by my tags.json
-        cy.intercept('GET', '**/tags', {fixture:tags.json})
+        cy.intercept('GET', '**/tags', {fixture:'tags.json'}) // cy.intercept(method, url, routeHandler)
         cy.loginToApplication()
     })
 
@@ -22,7 +22,7 @@ describe('Test with backend', () => {
         cy.intercept('POST', '**/articles').as('postArticles')
 
         cy.contains('New Article').click()
-        cy.get('[formcontrolname="title"]').type('Carol')
+        cy.get('[formcontrolname="title"]').type('Cypress test')
         cy.get('[formcontrolname="description"]').type('This is a description')
         cy.get('[formcontrolname="body"]').type('This is a body of the Article')
         cy.contains('Publish Article').click()
@@ -30,7 +30,7 @@ describe('Test with backend', () => {
         cy.wait('@postArticles')
         cy.get('@postArticles').then( xhr => {
             console.log(xhr)
-            expect(xhr.status).to.equal(200)
+            expect(xhr.response.statusCode).to.equal(200)
             expect(xhr.request.body.article.body).to.equal('This is a body of the Article')
             expect(xhr.response.body.article.description).to.equal('This is a description')
         })
@@ -50,7 +50,7 @@ describe('Test with backend', () => {
         //cy.screenshot('before-fill-in-article')
         cy.intercept('GET', '**/articles/feed*', {"articles":[],"articlesCount":0})
         //get article.json from global feed response(xhr)
-        cy.intercept('GET', '**/articles*', {fixture:articles.json})
+        cy.intercept('GET', '**/articles*', {fixture:'articles.json'})
 
         cy.contains('Global Feed').click()
         //cy.screenshot('after-fill-in-article')
