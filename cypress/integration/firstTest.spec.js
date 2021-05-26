@@ -58,5 +58,17 @@ describe('Test with backend', () => {
             expect(listOfButtons[1]).to.contain('3')
         })
 
+        //article.json we modify slug string from de second article 
+        cy.fixture('articles').then(file => {
+            const articleLink = file.articles[1].slug 
+            cy.route('POST', '**articles/'+articleLink+'/favorite', file)
+        })
+
+        cy.get('app-article-list button')
+        .eq(1)
+        .click()
+        .should('contain', '4')
+
     })
+    
 })

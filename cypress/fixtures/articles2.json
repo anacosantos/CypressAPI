@@ -1,0 +1,21 @@
+{
+    "article": {
+        "title": "My New Post",
+        "slug": "my-new-post-qtblx8",
+        "body": "some more text",
+        "createdAt": "2021-05-26T05:03:26.551Z",
+        "updatedAt": "2021-05-26T05:03:26.551Z",
+        "tagList": [
+            "test"
+        ],
+        "description": "some text",
+        "author": {
+            "username": "samjohnsonsounds",
+            "bio": null,
+            "image": "https://static.productionready.io/images/smiley-cyrus.jpg",
+            "following": false
+        },
+        "favorited": true,
+        "favoritesCount": 2
+    }
+}
