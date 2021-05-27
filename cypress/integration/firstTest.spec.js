@@ -40,15 +40,15 @@ describe('Test with backend', () => {
     it.only('intercepting and modifying the resquest and response', () => {
         // type and modify the description sent to browser using this method below
         //sent "This is a description" and on browser appear "This is a description 2"
-        // cy.intercept('POST', '**/articles', (req) => {
+        // cy.intercept('POST', '**/articles', (request) => {
         //     //request
-        //     req.body.article.description = "This is a description 2"
+        //     request.body.article.description = "This is a description 2"
         // }).as('postArticles')
 
         //modify the response
-        cy.intercept('POST', '**/articles', (req) => {
+        cy.intercept('POST', '**/articles', (request) => {
             //response , replay and get our replay from our server 
-            req.reply( res => {
+            request.reply( res => {
                 expect(res.body.article.description).to.equal('This is a description')
                 res.body.article.description = 'This is a description 2'
             })
