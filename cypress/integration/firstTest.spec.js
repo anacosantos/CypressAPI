@@ -7,10 +7,11 @@ describe('Test with backend', () => {
         //create server, because wanna override the route  
         //delete serve because intercept dont need anymore
         //cy.server()
-        //cy.route('GET', '**/tags', 'fixture:tags.json')
+        //cy.route('GET', '**/tags', 'fixture:tags.json') // old method
 
         //replace route to intercept method and override the return value by my tags.json
-        cy.intercept('GET', '**/tags', {fixture:'tags.json'}) // cy.intercept(method, url, routeHandler)
+        // refacture cy.intercept('GET', '**/tags', {fixture:'tags.json'}) // cy.intercept(method, url, routeHandler)
+        cy.intercept({method:'Get', path:'tags'}, {fixture:'tags.json'})
         cy.loginToApplication()
     })
 
@@ -35,6 +36,40 @@ describe('Test with backend', () => {
             expect(xhr.response.body.article.description).to.equal('This is a description')
         })
     })
+
+    it.only('intercepting and modifying the resquest and response', () => {
+        // type and modify the description sent to browser using this method below
+        //sent "This is a description" and on browser appear "This is a description 2"
+        // cy.intercept('POST', '**/articles', (req) => {
+        //     //request
+        //     req.body.article.description = "This is a description 2"
+        // }).as('postArticles')
+
+        //modify the response
+        cy.intercept('POST', '**/articles', (req) => {
+            //response , replay and get our replay from our server 
+            req.reply( res => {
+                expect(res.body.article.description).to.equal('This is a description')
+                res.body.article.description = 'This is a description 2'
+            })
+        }).as('postArticles')
+
+
+        cy.contains('New Article').click()
+        cy.get('[formcontrolname="title"]').type('Cypress test')
+        cy.get('[formcontrolname="description"]').type('This is a description')
+        cy.get('[formcontrolname="body"]').type('This is a body of the Article')
+        cy.contains('Publish Article').click()
+        //after click wait until this call will be completed, called as(alias) on cy.wait
+        cy.wait('@postArticles')
+        cy.get('@postArticles').then( xhr => {
+            console.log(xhr)
+            expect(xhr.response.statusCode).to.equal(200)
+            expect(xhr.request.body.article.body).to.equal('This is a body of the Article')
+            expect(xhr.response.body.article.description).to.equal('This is a description 2')
+        })
+    })
+
 
     it('should gave tag with routing object', () =>{  
         //before login I used another route 
