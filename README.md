@@ -1,3 +1,382 @@
+
+## My Cypress Summary
+
+Cypress
+
+Preparing environment
+- Install : chrome, node.js, git, VScode
+
+Open cloned file and take nom install and npm start
+
+Cypress Installation:
+Go to cypress.io:
+Command : npm install cypress --save-dev
+
+Cypress runner:
+npx cypress open(examples test and folders)
+ex. Login function :Cypress.Commands.add('login', (email, password) => { ... })
+Or overwrite : Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+File cypress integration/examples: many examples about tests
+
+Cypress.json
+-change different default settings for this cypress
+The basic config is: 
+Go to google type: cypress configuration
+Open:https://docs.cypress.io/guides/references/configuration
+
+First of all: baseUrl config
+
+{
+    "baseUrl": "https://localhost:4200",
+    "ignoreTestFiles": "**/examples/*",
+    "viewportHeight": 768,
+    "viewportWidth": 1024
+}
+
+Or
+
+{
+    "baseUrl": "http://localhost:4200",
+    "ignoreTestFiles": "**/examples/*",
+    "viewportHeight": 1080,
+    "viewportWidth": 1920
+}
+
+ 
+The test start with:
+describe() or context(), you diced what you will use 
+
+To start use cypress method, have to import <reference types="cypress"/>
+Start use cy.
+ex. cy.visit(), cy.get()…..
+
+Commands to open:
+npm start
+npx cypress open
+
+Always to import and export:
+Export class blábláblá {}
+And below : export const yesyeyes = new blablabla()
+
+**************************************************
+Create on commands:
+GO TO COMMANDS.JS
+Cypress.Commands.add('openHomePage', () => {
+    cy.visit('/')
+})
+Use this on:
+ beforeEach('open the application', () =>{
+        cy.openHomePage()
+    })
+
+Custom Commands
+:https://docs.cypress.io/api/cypress-api/custom-commands
+
+
+jQuery 
+Syntax	Description	Example
+$("*")	Selects all elements	Try it
+$(this)	Selects the current HTML element	Try it
+$("p.intro")	Selects all <p> elements with class="intro"	Try it
+$("p:first")	Selects the first <p> element	Try it
+$("ul li:first")	Selects the first <li> element of the first <ul>	Try it
+$("ul li:first-child")	Selects the first <li> element of every <ul>	Try it
+$("[href]")	Selects all elements with an href attribute	Try it
+$("a[target='_blank']")	Selects all <a> elements with a target attribute value equal to "_blank"	Try it
+$("a[target!='_blank']")	Selects all <a> elements with a target attribute value NOT equal to "_blank"	Try it
+$(":button")	Selects all <button> elements and <input> elements of type="button"	Try it
+$("tr:even")	Selects all even <tr> elements	Try it
+$("tr:odd")	Selects all odd <tr> elements	
+it.only(‘blablablablabla’, () => { } ) just execute this test
+
+*CYPRESS COMMANDS
+It.only() - just do this test
+It.skip() - skip this test
+cy.visit() - go to web page
+Cy.get() - find element entire DOM
+Cy.parents()- came from current and key element you’re in
+Cy.find() - child elements inside of parents
+ Cy.content():
+cy.contains(content)
+cy.contains(content, options)
+cy.contains(selector, content)
+cy.contains(selector, content, options)
+expect().to.equal()
+.type('Cypress.io{enter}') - botao e enter
+.check({force: true}) - usado qd esta escondido (visually-hidden)
+just check ,but not uncheck
+.eq()- pega o index do array
+Para escrever o should()
+Use os comandos - Chai-jQuery
+should(‘to.have.prop’, ‘…….)
+should('to.have.class', 'label')
+expect(label).to.have.class('label')
+.submit() - used only for FORM
+*Automatically create a folder called screenshot my project
+cy.screenshot('before-submit-the-form')
+cy.screenshot('after-submit-the-form')
+prev().screenshot(‘balela’)- go to element before it
+before(() => cy.exec(‘rm  -rf folder/screenshot’))- exec use command level from OS, will delete al screenshot
+Cy.intercept() - call backend
+
+
+
+** file commands inside support folder
+- Create commands
+
+
+
+CHAI_JQUERY
+
+Chainers	Assertion
+attr(name, [value])	expect($el).to.have.attr('foo', 'bar')
+prop(name, [value])	expect($el).to.have.prop('disabled', false)
+css(name, [value])	expect($el).to.have.css('background-color', 'rgb(0, 0, 0)')
+data(name, [value])	expect($el).to.have.data('foo', 'bar')
+class(className)	expect($el).to.have.class('foo')
+id(id)	expect($el).to.have.id('foo')
+html(html)	expect($el).to.have.html('I love testing')
+text(text)	expect($el).to.have.text('I love testing')
+value(value)	expect($el).to.have.value('test@dev.com')
+visible	expect($el).to.be.visible
+hidden	expect($el).to.be.hidden
+selected	expect($option).not.to.be.selected
+checked	expect($input).not.to.be.checked
+focus[ed]	expect($input).not.to.be.focused
+expect($input).to.have.focus
+enabled	expect($input).to.be.enabled
+disabled	expect($input).to.be.disabled
+empty	expect($el).not.to.be.empty
+exist	expect($nonexistent).not.to.exist
+match(selector)	expect($emptyEl).to.match(':empty')
+contain(text)	expect($el).to.contain('text')
+descendants(selector)	expect($el).to.have.descendants('div')
+
+BDD Assertentions:
+not	expect(name).to.not.equal('Jane')
+deep	expect(obj).to.deep.equal({ name: 'Jane' })
+nested	expect({a: {b: ['x', 'y']}}).to.have.nested.property('a.b[1]')
+expect({a: {b: ['x', 'y']}}).to.nested.include({'a.b[1]': 'y'})
+ordered	expect([1, 2]).to.have.ordered.members([1, 2]).but.not.have.ordered.members([2, 1])
+any	expect(arr).to.have.any.keys('age')
+all	expect(arr).to.have.all.keys('name', 'age')
+a(type)
+Aliases: an	expect('test').to.be.a('string')
+include(value)
+Aliases: contain, includes, contains	expect([1,2,3]).to.include(2)
+ok	expect(undefined).to.not.be.ok
+true	expect(true).to.be.true
+false	expect(false).to.be.false
+null	expect(null).to.be.null
+undefined	expect(undefined).to.be.undefined
+exist	expect(myVar).to.exist
+empty	expect([]).to.be.empty
+arguments
+Aliases: Arguments	expect(arguments).to.be.arguments
+equal(value)
+Aliases: equals, eq	expect(42).to.equal(42)
+deep.equal(value)	expect({ name: 'Jane' }).to.deep.equal({ name: 'Jane' })
+eql(value)
+Aliases: eqls	expect({ name: 'Jane' }).to.eql({ name: 'Jane' })
+greaterThan(value)
+Aliases: gt, above	expect(10).to.be.greaterThan(5)
+least(value)
+Aliases: gte	expect(10).to.be.at.least(10)
+lessThan(value)
+Aliases: lt, below	expect(5).to.be.lessThan(10)
+most(value)
+Aliases: lte	expect('test').to.have.length.of.at.most(4)
+within(start, finish)	expect(7).to.be.within(5,10)
+instanceOf(constructor)
+Aliases: instanceof	expect([1, 2, 3]).to.be.instanceOf(Array)
+property(name, [value])	expect(obj).to.have.property('name')
+deep.property(name, [value])	expect(deepObj).to.have.deep.property('tests[1]', 'e2e')
+ownProperty(name)
+Aliases: haveOwnProperty, own.property	expect('test').to.have.ownProperty('length')
+ownPropertyDescriptor(name)
+Aliases: haveOwnPropertyDescriptor	expect({a: 1}).to.have.ownPropertyDescriptor('a')
+lengthOf(value)	expect('test').to.have.lengthOf(3)
+match(RegExp)
+Aliases: matches	expect('testing').to.match(/^test/)
+string(string)	expect('testing').to.have.string('test')
+keys(key1, [key2], [...])
+Aliases: key	expect({ pass: 1, fail: 2 }).to.have.keys('pass', 'fail')
+throw(constructor)
+Aliases: throws, Throw	expect(fn).to.throw(Error)
+respondTo(method)
+Aliases: respondsTo	expect(obj).to.respondTo('getName')
+itself	expect(Foo).itself.to.respondTo('bar')
+satisfy(method)
+Aliases: satisfies	expect(1).to.satisfy((num) => { return num > 0 })
+closeTo(expected, delta)
+Aliases: approximately	expect(1.5).to.be.closeTo(1, 0.5)
+members(set)	expect([1, 2, 3]).to.include.members([3, 2])
+oneOf(values)	expect(2).to.be.oneOf([1,2,3])
+change(function)
+Aliases: changes	expect(fn).to.change(obj, 'val')
+increase(function)
+Aliases: increases	expect(fn).to.increase(obj, 'val')
+decrease(function)
+Aliases: decreases	expect(fn).to.decrease(obj, 'val')
+
+
+TDD ASSERTETION:
+
+Assertion	Example
+.isOk(object, [message])	assert.isOk('everything', 'everything is ok')
+.isNotOk(object, [message])	assert.isNotOk(false, 'this will pass')
+.equal(actual, expected, [message])	assert.equal(3, 3, 'vals equal')
+.notEqual(actual, expected, [message])	assert.notEqual(3, 4, 'vals not equal')
+.strictEqual(actual, expected, [message])	assert.strictEqual(true, true, 'bools strict eq')
+.notStrictEqual(actual, expected, [message])	assert.notStrictEqual(5, '5', 'not strict eq')
+.deepEqual(actual, expected, [message])	assert.deepEqual({ id: '1' }, { id: '1' })
+.notDeepEqual(actual, expected, [message])	assert.notDeepEqual({ id: '1' }, { id: '2' })
+.isAbove(valueToCheck, valueToBeAbove, [message])	assert.isAbove(6, 1, '6 greater than 1')
+.isAtLeast(valueToCheck, valueToBeAtLeast, [message])	assert.isAtLeast(5, 2, '5 gt or eq to 2')
+.isBelow(valueToCheck, valueToBeBelow, [message])	assert.isBelow(3, 6, '3 strict lt 6')
+.isAtMost(valueToCheck, valueToBeAtMost, [message])	assert.isAtMost(4, 4, '4 lt or eq to 4')
+.isTrue(value, [message])	assert.isTrue(true, 'this val is true')
+.isNotTrue(value, [message])	assert.isNotTrue('tests are no fun', 'val not true')
+.isFalse(value, [message])	assert.isFalse(false, 'val is false')
+.isNotFalse(value, [message])	assert.isNotFalse('tests are fun', 'val not false')
+.isNull(value, [message])	assert.isNull(err, 'there was no error')
+.isNotNull(value, [message])	assert.isNotNull('hello', 'is not null')
+.isNaN(value, [message])	assert.isNaN(NaN, 'NaN is NaN')
+.isNotNaN(value, [message])	assert.isNotNaN(5, '5 is not NaN')
+.exists(value, [message])	assert.exists(5, '5 is not null or undefined')
+.notExists(value, [message])	assert.notExists(null, 'val is null or undefined')
+.isUndefined(value, [message])	assert.isUndefined(undefined, 'val is undefined')
+.isDefined(value, [message])	assert.isDefined('hello', 'val has been defined')
+.isFunction(value, [message])	assert.isFunction(x => x * x, 'val is func')
+.isNotFunction(value, [message])	assert.isNotFunction(5, 'val not funct')
+.isObject(value, [message])	assert.isObject({num: 5}, 'val is object')
+.isNotObject(value, [message])	assert.isNotObject(3, 'val not object')
+.isArray(value, [message])	assert.isArray(['unit', 'e2e'], 'val is array')
+.isNotArray(value, [message])	assert.isNotArray('e2e', 'val not array')
+.isString(value, [message])	assert.isString('e2e', 'val is string')
+.isNotString(value, [message])	assert.isNotString(2, 'val not string')
+.isNumber(value, [message])	assert.isNumber(2, 'val is number')
+.isNotNumber(value, [message])	assert.isNotNumber('e2e', 'val not number')
+.isFinite(value, [message])	assert.isFinite('e2e', 'val is finite')
+.isBoolean(value, [message])	assert.isBoolean(true, 'val is bool')
+.isNotBoolean(value, [message])	assert.isNotBoolean('true', 'val not bool')
+.typeOf(value, name, [message])	assert.typeOf('e2e', 'string', 'val is string')
+.notTypeOf(value, name, [message])	assert.notTypeOf('e2e', 'number', 'val not number')
+
+
+
+Kind of assertions/expects
+https://docs.cypress.io/guides/references/assertions#BDD-Assertions
+
+*Using parents and find:
+Ex. travel through the form
+Look for form block and travel through them, select the parents and will find, email, password and sign in
+
+Quando se tem um calendário dar f12 e ir em properties: value
+
+## API (Application Programming Interface - black box)
+
+***Types:
+
+* get - request specific data from API
+*  post and put - send data to a API to create/update a resource
+*  delete - remove specified resource
+
+****Typical API request
+
+* API URL - http link to API. Usually called API End-point
+
+* HEADERS - usually it’s content-type or authorization token
+
+* TYPE - get, post, put, delete
+
+* BODY - JSON object with request data
+
+Cypress has built in server which can intercept browser API requests and provide mock response
+Cypress can makeAPI requests and process responses
+
+F12 go to network and filter ALL, HXR and ø to clear and refresh
+click user, HEADERS, get requests
+
+Create serve cypress: cy.server()
+Route: cy.route('POST', '**/articles').as('postArticles')
+The end: cy.wait('@postArticles')
+
+cy.get('@postArticles').then( xhr => {
+            console.log(xhr)
+        })
+
+
+After test, to do a conference and give a inspect on your test page.
+Open your console.log and find XMLHttpResquest.
+There you find:
+request is what is your browser send to backend server
+response is what we got back
+Always create expect like that:
+cy.get('@postArticles').then( xhr => {
+            console.log(xhr)
+            expect(xhr.status).to.equal(200)
+            expect(xhr.request.body.article.body).to.equal('This is a body of the Article')
+            expect(xhr.response.body.article.description).to.equal('This is a description')
+        })
+
+intercept browser request and how to provide mock or stop
+
+Go to tags and copy the response put into json file, go to fixtures - tags.json and paste the response
+We modify the Json file, because that we want to make the routing before we log into our application
+Need create cy.server on beforeEach: and also put locate json file 
+Like that:
+beforeEach('Login to the app', () => {
+        cy.server()
+        cy.route('GET', '**/tags', 'fixture:tags.json')
+        cy.loginToApplication()
+    })
+
+CREATE TEST FROM POSTMAN
+
+ to delete article, we need create one, published and open xhr article the from network
+    we'll use postman to repeat steps, because it is good to APIs
+    go to postman and select POST, copy the url that I did the article
+    into the XHR go to headers request(indo request headers), look for content-type
+    now go to postman and click on headers and copy content-type
+    below the key: Content-type and below the value: application/json
+    on headers above content-type look at the authorisation and requires the token
+    now return to postman on key: Authorisation and value: Token blablablabla
+    now on postman click on body and go to our body request(request Payload and click on view source)
+    copy this body request go to postman click on row and paste 
+    after click on Beautify button, and show the body request 
+    now on postman we'll modify: title, description and body 
+        {
+            "article": {
+                "tagList": [],
+                "title": "Request from API",
+                "description": "API testing is easy ",
+                "body": "Angular is cool"
+            }
+        }
+    now click on send on postman
+    after click scroll down, verify the status 200 OK
+    now let go our application and we have to see this application in IU the on global feed 
+
+    now we requires authorisation with big token, this token came from we login into the application
+    we will need another one more step to make another API call to give this token
+    how to get this token?
+    go in our application and delete
+    log out de appl. and clear the network and sign in again
+    check network  XHR login, check headers request payload user and click on response and got the token value
+    lets repeat these steps on postman too, go to postman click + and will open a new tab
+    POST , go to headers and get URL and copy and paste on postman
+    in postman click on headers got (content-type: application/json), and go to body and click row
+    lets copy body our browser(request payload view source{user: {"email": "carolzitafarmaceutica@gmail.com", "password": "xxxxxxxxxxxx"}})
+    click beautify and click send
+    the response and scroll down and find token and copy without quotes
+    paste to value authorisation and click send and see de 200 response
+    go back to our feed and we have our test data
+
+
+
+********************************************************************************
+
 [![RealWorld Frontend](https://img.shields.io/badge/realworld-frontend-%23783578.svg)](http://realworld.io)
 [![Build Status](https://travis-ci.org/gothinkster/angular-realworld-example-app.svg?branch=master)](https://travis-ci.org/gothinkster/angular-realworld-example-app)
 

@@ -37,7 +37,7 @@ describe('Test with backend', () => {
         })
     })
 
-    it.only('intercepting and modifying the resquest and response', () => {
+    it('intercepting and modifying the resquest and response', () => {
         // type and modify the description sent to browser using this method below
         //sent "This is a description" and on browser appear "This is a description 2"
         // cy.intercept('POST', '**/articles', (request) => {
@@ -108,5 +108,71 @@ describe('Test with backend', () => {
         .should('contain', '4')
 
     })
-    
+    //delete article
+    it.only('delete a new article in a global feed', () => {
+        //create user variable
+        const userCresentials = {
+            "user": {
+                "email": "carolzitafarmaceutica@gmail.com",
+                "password": "041359999"
+            }
+        }
+
+        //create body const 
+        const bodyRequest = {
+            "article": {
+                "tagList": [],
+                "title": "Request from API",
+                "description": "API testing is easy ",
+                "body": "Angular is cool"
+            }
+        }
+
+        //REQUESTS 1
+        //first: got this method from postman, we can find all on headers 
+        cy.request('POST', 'https://conduit.productionready.io/api/users/login', userCresentials)
+        //this response have body, and get this body(user and token(grab it))
+        .its('body').then(body => {
+            const token = body.user.token
+
+            //REQUESTS 2: create new article. we provide objecta dn inside espcify the param nedd to pass in
+             //this url came from my postman or headers from network
+             //headers is a object autho and token and provide value previous test
+            cy.request({
+                url: 'https://conduit.productionready.io/api/articles/',
+                headers: {'Authorization': 'Token '+token},
+                method: 'POST',
+                body: bodyRequest
+            }).then(response => {
+                expect(response.status).to.equal(200)
+            })
+            //go to application delete de article and re-run  your test on localhost and will appear again
+
+            //now delete from UI
+            //after click inspect and take value class of first article
+            cy.contains('Global Feed').click()
+            cy.get('.article-preview').first().click()
+            cy.get('.article-actions').contains('Delete Article').click()
+
+            //verify if the article was deleted
+            //go to global feed and verify if the article doesn't exist
+            //verify if the text our bodyrequest was delete
+            //go to your feed, clear the network and click on global feed
+            //get the api that appear in network
+            cy.request({
+                url:'https://conduit.productionready.io/api/articles?limit=10&offset=0',
+                headers: {'Authorization': 'Token '+token},
+                method: 'GET'
+            }).its('body').then( body =>{
+                //console.log(body) //look for the console body the title aand expect
+                 expect(body.articles[0].title).not.equal('Request from API')
+                if(body.articles[0].title !== 'Request from API'){
+                    cy.log('404 (Not Found)')
+                    console.log('404 (Not Found)')
+                }
+               
+            })
+            
+        })
+    })
 })
