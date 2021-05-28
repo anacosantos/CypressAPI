@@ -110,13 +110,13 @@ describe('Test with backend', () => {
     })
     //delete article
     it.only('delete a new article in a global feed', () => {
-        //create user variable
-        const userCresentials = {
-            "user": {
-                "email": "carolzitafarmaceutica@gmail.com",
-                "password": "041359999"
-            }
-        }
+        //create user variable //disable bacause was refacture the request 1 was changed for function above it
+        // const userCresentials = {
+        //     "user": {
+        //         "email": "carolzitafarmaceutica@gmail.com",
+        //         "password": "041359999"
+        //     }
+        // }
 
         //create body const 
         const bodyRequest = {
@@ -128,12 +128,16 @@ describe('Test with backend', () => {
             }
         }
 
-        //REQUESTS 1
+
+        cy.get('@token').then( token => {
+            
+       
+        //REQUESTS 1 // dsiable and refacture because I using the funtionality above
         //first: got this method from postman, we can find all on headers 
-        cy.request('POST', 'https://conduit.productionready.io/api/users/login', userCresentials)
-        //this response have body, and get this body(user and token(grab it))
-        .its('body').then(body => {
-            const token = body.user.token
+        // cy.request('POST', 'https://conduit.productionready.io/api/users/login', userCresentials)
+        // //this response have body, and get this body(user and token(grab it))
+        // .its('body').then(body => {
+        //     const token = body.user.token
 
             //REQUESTS 2: create new article. we provide objecta dn inside espcify the param nedd to pass in
              //this url came from my postman or headers from network

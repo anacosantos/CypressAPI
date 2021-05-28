@@ -373,6 +373,116 @@ CREATE TEST FROM POSTMAN
     paste to value authorisation and click send and see de 200 response
     go back to our feed and we have our test data
 
+    ***Headless authorization
+
+In localhost, check whats going on. Lets sing out and sign in again.
+Go to network and verify the api request and verify the response on the token 
+Now, we see what happen with this token.
+Go to application tab, next network and click
+Go to store and click on ‘Local Storage’ and click on arrow down and will appear:
+Localhost:4200 and above and right side will appear key and value and above the a yellow token.
+To make our headless authentication, we need to make an API request to get this token and then
+Save this token onto the browser local storage. After that the browser can perform any action as authenticated user.
+how we have a method on (support)command to login, now I will modify de Cypress.Command.add to make a headless authetication.
+Need to use request and use url login and token.(cy.request())
+
+Cypress.Commands.add('loginToApplication', () =>{
+    //headless authorization
+    const userCresentials = {
+        "user": {
+            "email": "carolzitafarmaceutica@gmail.com",
+            "password": “XXXXXXXXXX”
+        }
+    }
+
+    cy.request('POST', 'https://conduit.productionready.io/api/users/login', userCresentials)
+        .its('body').then(body => {
+            const token = body.user.token
+            //go to home page, because assume we already authenticate it and need provide option
+            //to our visit that log before event. use window object and window., want local storage, set item, item name is jwtToken and value token
+
+            cy.visit('/', {
+                onBeforeLoad (win){
+                    win.localStorage.setItem('jwtToken', token)
+                }
+            })
+        })
+
+
+In this case don’t need have to enter with username and password every time, the authentication happening heedlessly and the test run is much quicker that before .
+Because I already use getting the token in previous test where I use this request, and probably 
+Don’t need make this request again because I already have this token.
+Its better save this token into the cypress alias (@) and I’ll use this token inside of the apllication
+Lets do it below:
+cy.request('POST', 'https://conduit.productionready.io/api/users/login', userCresentials)
+        .its('body').then(body => {
+            const token = body.user.token
+            //using alias cypress
+            cy.wrap(token).as('token')
+            //go to home page, because assume we already authenticate it and need provide option
+            //to our visit that log before event. use window object and window., want local storage, set item, item name is jwtToken and value token
+            cy.visit('/', {
+                onBeforeLoad (win){
+                    win.localStorage.setItem('jwtToken', token)
+                }
+            })
+        })
+
+In my test I’ll refacture the request 
+ cy.get('@token').then( token => {
+            
+       
+        //REQUESTS 1 // dsiable and refacture because I using the funtionality above
+        //first: got this method from postman, we can find all on headers 
+        // cy.request('POST', 'https://conduit.productionready.io/api/users/login', userCresentials)
+        // //this response have body, and get this body(user and token(grab it))
+        // .its('body').then(body => {
+        //     const token = body.user.token
+
+            //REQUESTS 2: create new article. we provide objecta dn inside espcify the param nedd to pass in
+             //this url came from my postman or headers from network
+             //headers is a object autho and token and provide value previous test
+            cy.request({
+                url: 'https://conduit.productionready.io/api/articles/',
+                headers: {'Authorization': 'Token '+token},
+                method: 'POST',
+                body: bodyRequest
+            }).then(response => {
+                expect(response.status).to.equal(200)
+            })
+            //go to application delete de article and re-run  your test on localhost and will appear again
+
+            //now delete from UI
+            //after click inspect and take value class of first article
+            cy.contains('Global Feed').click()
+            cy.get('.article-preview').first().click()
+            cy.get('.article-actions').contains('Delete Article').click()
+
+            //verify if the article was deleted
+            //go to global feed and verify if the article doesn't exist
+            //verify if the text our bodyrequest was delete
+            //go to your feed, clear the network and click on global feed
+            //get the api that appear in network
+            cy.request({
+                url:'https://conduit.productionready.io/api/articles?limit=10&offset=0',
+                headers: {'Authorization': 'Token '+token},
+                method: 'GET'
+            }).its('body').then( body =>{
+                //console.log(body) //look for the console body the title aand expect
+                 expect(body.articles[0].title).not.equal('Request from API')
+                if(body.articles[0].title !== 'Request from API'){
+                    cy.log('404 (Not Found)')
+                    console.log('404 (Not Found)')
+                }
+               
+            })
+            
+        })
+    })
+})
+
+
+
 
 
 ********************************************************************************
