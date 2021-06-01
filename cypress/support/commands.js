@@ -26,14 +26,17 @@
 
 Cypress.Commands.add('loginToApplication', () =>{
     //headless authorization
+
+    console.log(Cypress.env('username'))
+    console.log(Cypress.env('password'))
     const userCresentials = {
         "user": {
-            "email": "carolzitafarmaceutica@gmail.com",
-            "password": "041359999"
+            "email": Cypress.env('username'),
+            "password": Cypress.env('password')
         }
     }
 
-    cy.request('POST', 'https://conduit.productionready.io/api/users/login', userCresentials)
+    cy.request('POST', Cypress.env('apiUrl')+'api/users/login', userCresentials)
         .its('body').then(body => {
             const token = body.user.token
             //using alias cypress

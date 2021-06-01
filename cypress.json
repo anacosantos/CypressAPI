@@ -3,6 +3,11 @@
     "ignoreTestFiles": "**/examples/*",
     "viewportHeight": 1080,
     "viewportWidth": 1920, 
-    "video": false
+    "video": false,
+    "env": {
+        "username": "carolzitafarmaceutica@gmail.com",
+        "password": "041359999",
+        "apiUrl": "https://conduit.productionready.io/"
+      }
 }
 

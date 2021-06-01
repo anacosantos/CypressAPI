@@ -109,7 +109,7 @@ describe('Test with backend', () => {
 
     })
     //delete article
-    it.only('delete a new article in a global feed', () => {
+    it('delete a new article in a global feed', () => {
         //create user variable //disable bacause was refacture the request 1 was changed for function above it
         // const userCresentials = {
         //     "user": {
@@ -143,7 +143,7 @@ describe('Test with backend', () => {
              //this url came from my postman or headers from network
              //headers is a object autho and token and provide value previous test
             cy.request({
-                url: 'https://conduit.productionready.io/api/articles/',
+                url: Cypress.env('apiUrl')+'api/articles/',
                 headers: {'Authorization': 'Token '+token},
                 method: 'POST',
                 body: bodyRequest
@@ -164,7 +164,7 @@ describe('Test with backend', () => {
             //go to your feed, clear the network and click on global feed
             //get the api that appear in network
             cy.request({
-                url:'https://conduit.productionready.io/api/articles?limit=10&offset=0',
+                url: Cypress.env('apiUrl')+'api/articles?limit=10&offset=0',
                 headers: {'Authorization': 'Token '+token},
                 method: 'GET'
             }).its('body').then( body =>{
